@@ -1,20 +1,48 @@
-import React from 'react';
+import { render } from '@testing-library/react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './Counter.css';
+import PropTypes from 'prop-types';
 
+class Counter extends Component {
 
-function Counter() {
-    return (
-      <div className="counter">
-          <button onClick={increment()}  >+1</button>
-          <span className="count">0</span>
-      </div>
-    );
-  }
+    constructor(){
+        super();
+        this.state = {
+            count : 0
+        }
 
-  function increment()
+        this.increment = this.increment.bind(this);
+    }
+
+    render()
+    {
+        return (
+            <div className="counter">
+                <button onClick={this.increment}> + {this.props.by} </button>
+                <span className="count">{this.state.count}</span>
+            </div>
+          );
+    }
+
+  increment()
   {
-    console.log('in increment');
+    //this.state.count = this.state.count +1;
+    this.setState({
+        count:  this.state.count + this.props.by
+    });
+  //  console.log('in increment');
   }
 
+  }
+
+  Counter.defaultProps = {
+      by: 1
+  }
+
+  /*
+  Counter.PropTypes = {
+    by: PropTypes.number
+}
+*/
   export default Counter;
