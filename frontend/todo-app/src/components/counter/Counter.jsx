@@ -14,6 +14,35 @@ class Counter extends Component {
 
         this.increment = this.increment.bind(this);
     }
+    render()
+    {
+        return (
+            <div  className="counter">
+                <CounterButton/>
+                <CounterButton by={5} />
+                <CounterButton by={20} />
+            </div>
+          );
+    }
+
+    increment()
+    {
+      this.setState({
+          count:  this.state.count + this.props.by
+      });
+    }
+}
+
+class CounterButton extends Component {
+
+    constructor(){
+        super();
+        this.state = {
+            count : 0
+        }
+
+        this.increment = this.increment.bind(this);
+    }
 
     render()
     {
@@ -36,7 +65,7 @@ class Counter extends Component {
 
   }
 
-  Counter.defaultProps = {
+  CounterButton.defaultProps = {
       by: 1
   }
 
