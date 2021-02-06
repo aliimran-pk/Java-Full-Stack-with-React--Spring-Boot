@@ -9,7 +9,7 @@ class TodoApp extends Component {
 
     render (){
         return (
-            <div className="toDo">
+            <div>
                 <Router>
                     <>
                         <HeaderComponent/>
@@ -18,6 +18,7 @@ class TodoApp extends Component {
                             <Route path="/login" component={LoginComponent}></Route>
                             <Route path="/welcome:name" component={WelcomeComponent}></Route>
                             <Route path="/todos" component={ListToDoComponent}></Route>
+                            <Route path="/logout" component={LogoutComponent}></Route>
                             <Route component={ErrorComponent}></Route>
                        </Switch>
                        <FooterComponent/>
@@ -49,13 +50,39 @@ class WelcomeComponent extends Component {
     }
 }
 
+class LogoutComponent extends Component {
+
+    render (){
+        return (
+            <>
+               <h1>You are logged out</h1>
+               <div className="container"></div>
+               Thnak you for using the Application
+            </>
+          );
+    }
+}
+
 class HeaderComponent extends Component {
 
     render (){
         return (
-            <div className="toDo">
-              Header <hr/>
-              </div>
+
+            <header>
+                <nav className="navbar navbar-expand-md navbar-dark bg-dark  ">
+                    <div><a href="www.google.com" className="navbar-brand">Google</a> </div>
+                    <ul className="navbar-nav">
+                        <li><Link to="/" className="navbar-link"> Home </Link> </li>
+                        <li><Link to="/todos" className="navbar-link"> Todo </Link> </li>
+                    </ul>
+                    <ul className="navbar-nav navbar-collapse justify-content-end">
+                        <li><Link to="/login" className="navbar-link"> Login </Link> </li>
+                        <li><Link to="/logout" className="navbar-link"> Logout </Link> </li>
+                    </ul>
+                </nav>
+            </header>
+
+
           );
     }
 }
@@ -65,8 +92,8 @@ class FooterComponent extends Component {
 
     render (){
         return (
-            <div className="toDo">
-              Footer <hr/>
+            <div className="Footer" >
+            <span className="text-muted">   All right reserved </span><hr/>
               </div>
           );
     }
