@@ -4,6 +4,9 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import './bootstrap.css';
+import AuthenticationService from './AuthenticationService.js';
+import AuthenticatedRoute from './AuthenticatedRoute.jsx';
+
 
 class TodoApp extends Component {
 
@@ -16,9 +19,9 @@ class TodoApp extends Component {
                        <Switch>
                             <Route path="/" exact component={LoginComponent}></Route>
                             <Route path="/login" component={LoginComponent}></Route>
-                            <Route path="/welcome:name" component={WelcomeComponent}></Route>
-                            <Route path="/todos" component={ListToDoComponent}></Route>
-                            <Route path="/logout" component={LogoutComponent}></Route>
+                            <AuthenticatedRoute path="/welcome:name" component={WelcomeComponent}></AuthenticatedRoute>
+                            <AuthenticatedRoute path="/todos" component={ListToDoComponent}></AuthenticatedRoute>
+                            <AuthenticatedRoute path="/logout" component={LogoutComponent}></AuthenticatedRoute>
                             <Route component={ErrorComponent}></Route>
                        </Switch>
                        <FooterComponent/>
@@ -42,10 +45,13 @@ class WelcomeComponent extends Component {
 
     render (){
         return (
-            <div className="toDo">
+            <>
+            <h1>Welcome!</h1>
+            <div className="container">
                Welcome {this.props.match.params.name}<p/>
                Manage your Todos  <Link to="/todos" >Click here</Link>
             </div>
+            </>
           );
     }
 }
@@ -66,23 +72,23 @@ class LogoutComponent extends Component {
 class HeaderComponent extends Component {
 
     render (){
-        return (
 
+        const userLoggedIn = AuthenticationService.isUserLoggedIn();
+        console.log('userlogin:' + userLoggedIn)
+        return (
             <header>
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark  ">
                     <div><a href="www.google.com" className="navbar-brand">Google</a> </div>
                     <ul className="navbar-nav">
-                        <li><Link to="/" className="navbar-link"> Home </Link> </li>
-                        <li><Link to="/todos" className="navbar-link"> Todo </Link> </li>
+                        {userLoggedIn && <li><Link to="/welcome" className="navbar-link">Home&nbsp;</Link> </li>}
+                        {userLoggedIn && <li><Link to="/todos" className="navbar-link">Todo</Link> </li>}
                     </ul>
                     <ul className="navbar-nav navbar-collapse justify-content-end">
-                        <li><Link to="/login" className="navbar-link"> Login </Link> </li>
-                        <li><Link to="/logout" className="navbar-link"> Logout </Link> </li>
+                        {!userLoggedIn &&  <li><Link to="/login" className="navbar-link">Login&nbsp;</Link> </li>}
+                        {userLoggedIn &&  <li><Link to="/logout" className="navbar-link" onClick={AuthenticationService.logout} >Logout</Link> </li>}
                     </ul>
                 </nav>
             </header>
-
-
           );
     }
 }
@@ -92,8 +98,8 @@ class FooterComponent extends Component {
 
     render (){
         return (
-            <div className="Footer" >
-            <span className="text-muted">   All right reserved </span><hr/>
+            <div className="Footer bg-dark" >
+            <span className="text-muted" >   All right reserved by Ali Imran</span><hr/>
               </div>
           );
     }
@@ -116,15 +122,15 @@ class ListToDoComponent extends Component {
 
     render (){
         return (
-            <div className="toDo">
+            <div>
                <h1>List Todos</h1>
-               <table>
+               <div className="container">
+               <table className="table" >
                    <thead>
                        <tr>
-                           <td>Id</td>
                            <td>Description</td>
+                           <td>Is Completed ?</td>
                            <td>Target Date</td>
-                           <td>Completed</td>
                        </tr>
                    </thead>
                     <tbody>
@@ -132,7 +138,6 @@ class ListToDoComponent extends Component {
                             this.state.todos.map(
                                 todoObj =>
                                 <tr key={todoObj.id}>
-                                    <td>{todoObj.id}</td>
                                     <td>{todoObj.description}</td>
                                     <td>{todoObj.done.toString()}</td>
                                     <td>{todoObj.targetDate.toString()}</td>
@@ -142,7 +147,7 @@ class ListToDoComponent extends Component {
                     </tbody>
 
                 </table>
-
+                </div>
             </div>
           );
     }
@@ -179,6 +184,7 @@ class LoginComponent extends Component {
         if (this.state.username === 'user1' && this.state.password ==='pwd'){
             //this.setState({loginSuccess: true,loginFailed: false})
             this.props.history.push(`/welcome ${this.state.username}`)
+            AuthenticationService.registerSuccessfulLogin(this.state.username,this.state.password)
 
         }
         else
@@ -190,14 +196,17 @@ class LoginComponent extends Component {
 
     render (){
         return (
-            <div className="toDo">
+            <>
+            <h1>Login</h1>
+            <div className="container">
                User Name: <input type="text" name = "username" value={this.state.username}  onChange={this.handleChange}></input>
                Password: <input type="password" name = "password" value={this.state.password} onChange={this.handleChange} ></input>
-               <button onClick={this.loginClicked} >Login</button>
+               <button onClick={this.loginClicked} className="btn btn-s" >Login</button>
                {this.state.loginSuccess && <div>Login Success</div>}
-               {this.state.loginFailed && <div>Login Failed</div>}
+               {this.state.loginFailed && <div className="alert alert-warning">Login Failed</div>}
 
             </div>
+            </>
           );
     }
 
