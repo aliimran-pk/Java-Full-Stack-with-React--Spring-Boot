@@ -15,7 +15,7 @@ class TodoComponent extends Component {
         }
 
         this.onToDoFormValidate = this.onToDoFormValidate.bind(this)
-        this.onToDoFormValidate = this.onToDoFormValidate.bind(this)
+        this.onToDoFormSubmit   = this.onToDoFormSubmit.bind(this)
 
     }
 
