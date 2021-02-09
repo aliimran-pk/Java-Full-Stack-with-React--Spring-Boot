@@ -23,6 +23,7 @@ class TodoComponent extends Component {
 
         if (this.state.id === -1) {
             return
+            //  No need to get details of Todo if it is new todo
         }
 
         let username = AuthenticationService.getLoggedInUserName()
