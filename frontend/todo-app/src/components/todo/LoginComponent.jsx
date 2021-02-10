@@ -28,6 +28,7 @@ class LoginComponent extends Component {
 
     loginClicked()
     {
+        /*
         if (this.state.username === 'user1' && this.state.password ==='pwd'){
             //this.setState({loginSuccess: true,loginFailed: false})
             this.props.history.push(`/welcome/${this.state.username.trim()}`)
@@ -38,6 +39,16 @@ class LoginComponent extends Component {
         {
             this.setState({loginSuccess: false,loginFailed: true})
         }
+        */
+       AuthenticationService
+       .executeBasicAuthenticationService(this.state.username, this.state.password)
+       .then((response) => {
+           AuthenticationService.registerSuccessfulLogin(this.state.username, response.data.token)
+           this.props.history.push(`/welcome/${this.state.username}`)
+       }).catch(() => {
+           this.setState({ showSuccessMessage: false })
+           this.setState({ hasLoginFailed: true })
+       })
 
     }
 
