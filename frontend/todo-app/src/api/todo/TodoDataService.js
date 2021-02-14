@@ -1,29 +1,34 @@
 
 import axios from 'axios';
+import { API_URL,JPA_API_URL } from '../../Constants'
+
 class TodoDataService
 {
 
     retrieveAllTodos(name){
-      return axios.get(`http://localhost:8080/users/${name}}/todos`)
+        let url = `${JPA_API_URL}/users/${name}/todos`
+        console.log(url)
+        return axios.get(url)
     }
 
     deleteToDo(name,id){
-        return axios.delete(`http://localhost:8080/users/${name}}/todos/${id}`)
+        return axios.delete(`${JPA_API_URL}/users/${name}/todos/${id}`)
     }
 
     retrieveTodo(name, id) {
-        //console.log('executed service')
-        return axios.get(`http://localhost:8080/users/${name}/todos/${id}`);
+        let url = `${JPA_API_URL}/users/${name}/todos/${id}`
+        console.log(url)
+        return axios.get(url);
     }
 
     updateTodo(name, id, todo) {
         //console.log('executed service')
-        return axios.put(`http://localhost:8080/users/${name}/todos/${id}`, todo);
+        return axios.put(`${JPA_API_URL}/users/${name}/todos/${id}`, todo);
     }
 
     createTodo(name, todo) {
         //console.log('executed service')
-        return axios.post(`http://localhost:8080/users/${name}/todos/`, todo);
+        return axios.post(`${JPA_API_URL}/users/${name}/todos/`, todo);
     }
 }
 
